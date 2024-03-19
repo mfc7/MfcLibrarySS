@@ -62,5 +62,17 @@ Uygulamayı çalıştırmak için aşağıdaki adımları izleyin:
 
 Not: Toplamda 2 insan/gün olarak eforlamıştım fakat frontend tarafındaki eksiklerim ve öğrenim sürecinden dolayı 3 günde tamamladım.
 
+### Uygulama Ekran Görüntüleri
+
+![KitapListeSS](https://github.com/mfc7/MfcLibrarySS/assets/91016593/ddeaa888-1313-4155-a793-aa201db57514)
+
+![KitapEkleSS](https://github.com/mfc7/MfcLibrarySS/assets/91016593/89484051-e38b-42b8-aba3-7ad5c361dffc)
+
+![KitapOduncSS](https://github.com/mfc7/MfcLibrarySS/assets/91016593/559d372f-1d8e-422a-b3bc-64c8dc0906cf)
+
+![sqlSS](https://github.com/mfc7/MfcLibrarySS/assets/91016593/3d806577-2363-4830-804c-8f3d816c5aaa)
+
+![ResponsiveSS](https://github.com/mfc7/MfcLibrarySS/assets/91016593/69751258-b1da-42b0-be32-d0662afea3bd)
+
 ### 15-18 / 03 / 2024
 ### Fatih ÇATAL
