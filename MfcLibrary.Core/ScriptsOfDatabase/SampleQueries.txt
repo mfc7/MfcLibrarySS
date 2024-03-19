@@ -1,0 +1,5 @@
+﻿SELECT * FROM Book
+
+SELECT * FROM Lending
+
+SELECT b.BookName, b.Author, b.ImageUrl, CASE WHEN b.IsLoaned = 1 THEN 'Dışarıda' ELSE 'Kütüphanede' END AS Status, CASE WHEN l.BorrowerName IS NULL THEN '-' ELSE l.BorrowerName END AS BorrowerName, l.GiveBackDate FROM Book b LEFT JOIN Lending l ON b.ID = l.BookID WHERE l.ID IS NULL OR (l.ID = (SELECT TOP 1 ID FROM Lending WHERE BookID = b.ID ORDER BY LoanDate DESC)) ORDER BY b.BookName
