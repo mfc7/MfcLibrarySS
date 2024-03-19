@@ -1,0 +1,57 @@
+﻿@model MfcLibrary.DTO.LendingDTO.LoanDto
+
+<div id="loanAlert" class="alert alert-dismissible fade" role="alert" style="display: none;"></div>
+
+<form id="loanForm_@Model.BookID" asp-action="LoanBook" asp-controller="Book" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="BookID" />
+    <input type="hidden" asp-for="BookName" />
+    <div class="form-group">
+        <label asp-for="BorrowerName">Ödünç Alan Kişi:</label>
+        <input asp-for="BorrowerName" class="form-control" required/>
+        <span asp-validation-for="BorrowerName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="GiveBackDate">Geri Getirme Tarihi:</label>
+        <input type="date" asp-for="GiveBackDate" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")" min="@DateTime.Today.ToString("yyyy-MM-dd")" required />
+        <span asp-validation-for="GiveBackDate" class="text-danger"></span>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Ödünç Ver</button>
+</form>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            function showLoanAlert(message, isSuccess) {
+                var alertClass = isSuccess ? "alert-success" : "alert-danger";
+                $('#loanAlert').removeClass('alert-success alert-danger').addClass('alert ' + alertClass);
+                $('#loanAlert').text(message).show();
+            }
+
+            function handleLoanResponse(response) {
+                if (response.isSuccess) {
+                    showLoanAlert(response.message, true);
+                } else {
+                    showLoanAlert(response.message, false);
+                }
+            }
+
+            $('form').submit(function (event) {
+                event.preventDefault();
+                var form = $(this);
+                var url = form.attr('action');
+                var formData = form.serialize();
+                $.post(url, formData)
+                    .done(function (response) {
+                        handleLoanResponse(response);
+                    })
+                    .fail(function (error) {
+                        showLoanAlert('An error occurred while submitting the form.', false);
+                    });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,124 @@
+﻿@model IEnumerable<MfcLibrary.DTO.BookDTOs.BookSelectDto>
+
+
+@if (!string.IsNullOrEmpty(TempData["AlertMessage"]?.ToString()))
+{
+    var isSuccess = TempData["AlertMessage"].ToString() == "Success";
+    var message = isSuccess ? "İşlem gerçekleşti." : "İşlem sırasında bir hata oluştu.";
+    var alertClass = isSuccess ? "alert-success" : "alert-danger";
+
+    <div class="alert @alertClass alert-dismissible fade show" role="alert">
+        <strong>@(isSuccess ? "Başarılı!" : "Hata!")</strong>
+        <a>@message</a>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<h2>KÜTÜPHANE</h2>
+
+<button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addBookModal">
+    Kitap Ekle
+</button>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Kitap Adı</th>
+                <th scope="col">Yazar</th>
+                <th scope="col">Resim</th>
+                <th scope="col">Durumu</th>
+                <th scope="col">Ödünç Alan Kişi</th>
+                <th scope="col">Geri Getirme Tarihi</th>
+                <th scope="col"> </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td>@book.BookName</td>
+                    <td>@book.Author</td>
+                    <td>
+                        <img src="@book.ImageUrl" alt="Book Image" style="max-width: 100px; max-height: 150px;" />
+                    </td>
+                    <td>@(book.IsLoaned ? "Dışarıda" : "Kütüphanede")</td>
+                    <td>@(book.BorrowerName != null ? book.BorrowerName : "-")</td>
+                    <td>@(book.GiveBackDate != null && book.GiveBackDate.Year > 1 ? book.GiveBackDate.ToShortDateString() : "-")</td>
+                    <td>
+                        @* @if (!book.IsLoaned) Dışarıdaki kitap için ödünç vermeyi deaktive eder.
+                        { *@
+                            <button type="button" class="btn btn-primary btn-sm loan-button" data-toggle="modal" data-target="#loanBookModal_@book.ID">
+                                Ödünç Ver
+                            </button>
+                        @* } *@
+                    </td>
+                </tr>
+
+                <div class="modal fade" id="loanBookModal_@book.ID" tabindex="-1" role="dialog" aria-labelledby="loanBookModalLabel_@book.ID" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="loanBookModalLabel_@book.ID">Ödünç Ver - @book.BookName</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="loanBookPartial_@book.ID">
+                                    @{
+                                        await Html.RenderPartialAsync("_LoanBookPartial", new MfcLibrary.DTO.LendingDTO.LoanDto { BookID = book.ID, BookName = book.BookName });
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="addBookModal" tabindex="-1" role="dialog" aria-labelledby="addBookModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addBookModalLabel">Kitap Ekle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="addBookPartial">
+                    @{
+                        await Html.RenderPartialAsync("_AddBookPartial", new MfcLibrary.DTO.BookDTOs.BookAddDto());
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.loan-button').click(function () {
+                var bookId = $(this).closest('tr').find('td:first').text();
+                $('#loanBookModal_' + bookId).modal('show');
+            });
+        });
+
+        //TODO
+        // Validation hatalarını kontrol eden ve pop-up mesajlarını gösteren fonksiyon.
+        function showValidationErrors(errors) {
+            var errorMessage = "Lütfen aşağıdaki hataları düzeltin:\n";
+            errors.forEach(function (error) {
+                errorMessage += "- " + error + "\n";
+            });
+            alert(errorMessage);
+        }
+    </script>
+}

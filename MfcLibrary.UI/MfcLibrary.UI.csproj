@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.9.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MfcLibrary.BLL\MfcLibrary.BLL.csproj" />
+    <ProjectReference Include="..\MfcLibrary.Core\MfcLibrary.Core.csproj" />
+    <ProjectReference Include="..\MfcLibrary.DAL\MfcLibrary.DAL.csproj" />
+  </ItemGroup>
+
+</Project>

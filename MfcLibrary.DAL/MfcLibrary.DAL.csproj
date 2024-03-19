@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.28" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MfcLibrary.Core\MfcLibrary.Core.csproj" />
+    <ProjectReference Include="..\MfcLibrary.DTO\MfcLibrary.DTO.csproj" />
+    <ProjectReference Include="..\MfcLibrary.Entity\MfcLibrary.Entity.csproj" />
+  </ItemGroup>
+
+</Project>
